@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event Statistics{% endblock %}
+
+{% block stylesheets %}
+    <!-- Include Chart.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.css">
+{% endblock %}
+
+{% block body %}
+    <h1>Event Statistics</h1>
+
+    {% if events is not empty %}
+        <div style="max-width: 400px; margin: 0 auto;">
+            <canvas id="eventChart" width="300" height="300"></canvas>
+        </div>
+    {% else %}
+        <p>No events found.</p>
+    {% endif %}
+
+    <a href="{{ path('app_Home') }}" class="btn btn-primary">Back to Home</a>
+
+    {% block javascripts %}
+        <!-- Include Chart.js library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Get event names and ticket counts
+                const eventNames = [];
+                const ticketCounts = [];
+                {% for event in events %}
+                    eventNames.push("{{ event.nomevent }}");
+                    ticketCounts.push({{ eventTicketCounts[event.id] ?? 0 }});
+                {% endfor %}
+
+                // Get canvas element
+                const ctx = document.getElementById('eventChart').getContext('2d');
+
+                // Create pie chart
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: eventNames,
+                        datasets: [{
+                            label: 'Tickets Sold',
+                            data: ticketCounts,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)',
+                                'rgba(255, 159, 64, 0.6)'
+                                // Add more colors if needed
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // Allow the chart to be smaller than the canvas size
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.label + ': ' + tooltipItem.raw.toFixed(2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'Base.html.twig' %}
+
+{% block title %}Ticket index{% endblock %}
+
+{% block body %}
+ 
+<div class="">
+    <div class="d-flex justify-content-center">
+        <ul class="nav">
+            <li class="nav-item me-3">
+                <a class="nav-link btn btn-custom-primary" href="{{ path('app_ticket_index') }}">
+                    </i>
+                    <span>Ticket</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-custom-primary" href="{{ path('app_reeser_index') }}">
+                    </i>
+                    <span>Reservation</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+     
+
+
+  
+      <main id="main" class="main">
+    {{ include('Back/reeser/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_reeser_index') }}">back to list</a>
+
+    {{ include('Back/reeser/_delete_form.html.twig') }}
+{% endblock %}

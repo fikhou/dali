@@ -1,0 +1,27 @@
+<!-- pdf/ticket_table.html.twig -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Total</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.id }}</td>
+                <td>{{ ticket.nombre }}</td>
+                <td>{{ ticket.totale }}</td>
+                <td>{{ ticket.date ? ticket.date|date('Y-m-d') : '' }}</td>
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No records found</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

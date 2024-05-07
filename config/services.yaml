@@ -1,0 +1,34 @@
+# config/services.yaml
+
+parameters:
+    image_directory: '%kernel.project_dir%/public/uploads/images'
+    terrain_images_directory: '%kernel.project_dir%/public/uploads/images'
+    terrain_videos_directory: '%kernel.project_dir%/public/uploads/videos'
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+
+services:
+    # Default configuration for services in this file
+    _defaults:
+        autowire: true      # Automatically inject dependencies into your services.
+        autoconfigure: true # Automatically register services as commands, event subscribers, etc.
+
+    # Define your own services here:
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # Define the Dompdf service
+    Dompdf\Dompdf:
+        autowire: true
+
+    # Define the PdfController service and inject the Dompdf instance
+    App\Controller\PdfController:
+        arguments:
+            $dompdf: '@Dompdf\Dompdf'
+
+    # Explicitly define the LoginFormAuthenticator service
+    App\Security\LoginFormAuthenticator:
+        autowire: true

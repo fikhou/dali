@@ -1,0 +1,53 @@
+{% extends 'BaseBack.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+  <div class="d-flex align-items-center justify-content-between">
+     <div class="d-flex align-items-center justify-content-between">
+      <a href="{{ path('app_Home') }}" class="logo d-flex align-items-center"> <!-- home -->
+        <span class="d-none d-lg-block"><span style="color:black">R</span>vent</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+
+
+
+
+</header>
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+
+
+        <li class="nav-heading">Gestion User</li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ path('app_user_index') }}"> <!-- user pROFILE PAGE -->
+                <i class="bi bi-layout-text-window-reverse"></i>
+                <span>Users</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_user_dashboard') }}"> <!-- user pROFILE PAGE -->
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <!-- End Nav Item -->
+        
+  </div><!-- End Page Title -->
+
+  <section class="section">
+
+  </section>
+
+</main>
+
+
+{% endblock %}

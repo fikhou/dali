@@ -1,0 +1,28 @@
+{# form.html.twig for Reeser entity #}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+{{ form_start(form) }}
+
+<div class="mb-3">
+    {{ form_label(form.nombre, 'Nombre') }}
+    {{ form_widget(form.nombre, {'attr': {'autocomplete': 'off'}}) }}
+    {{ form_errors(form.nombre) }}
+</div>
+
+<div class="mb-3">
+    {{ form_label(form.nomreser, 'Nomreser') }}
+    {{ form_widget(form.nomreser, {'attr': {'autocomplete': 'off'}}) }}
+    {{ form_errors(form.nomreser) }}
+</div>
+
+<div class="mb-3">
+    {{ form_label(form.date, 'Date') }}
+    {{ form_widget(form.date, {'attr': {'autocomplete': 'off'}}) }}
+    {{ form_errors(form.date) }}
+</div>
+
+{# Add more fields as needed... #}
+
+<button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}

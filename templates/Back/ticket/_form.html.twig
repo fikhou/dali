@@ -1,0 +1,31 @@
+{# form.html.twig for Ticket entity #}
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+<div class="form-group">
+    {{ form_label(form.nombre, 'Number') }}
+    {{ form_widget(form.nombre, {'attr': {'class': 'form-control'}}) }}
+    {{ form_errors(form.nombre) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.totale, 'Total') }}
+    {{ form_widget(form.totale, {'attr': {'class': 'form-control'}}) }}
+    {{ form_errors(form.totale) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.date, 'Date') }}
+    {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+    {{ form_errors(form.date) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.event, 'Event') }}
+    {{ form_widget(form.event, {'attr': {'class': 'form-control'}}) }}
+    {{ form_errors(form.event) }}
+</div>
+
+<button type="submit" class="btn btn-primary">Submit</button>
+
+{{ form_end(form) }}

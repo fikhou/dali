@@ -1,0 +1,32 @@
+  
+  {% extends 'base.html.twig' %}
+{% block title %}{% endblock %}
+
+{% block body %}
+        {% for entreprise in entreprises %}
+    {% if entreprise.isStatus() %}
+<div class="col-md-6 mb-4 pb-2">
+    <div class="blog-item">
+        <div class="position-relative">
+        
+           {% if entreprise.image %}
+    <img class="img-fluid w-100" src="{{ asset('uploads/images/' ~ entreprise.image) }}" alt="">
+{% endif %}
+            <div class="blog-date">
+                <h6 class="font-weight-bold mb-n1">{{ entreprise.getnomentreprise() }}</h6>
+                <small class="text-white text-uppercase">{{ entreprise.getdescription}}</small>
+            </div>
+        </div>
+                                <div class="bg-white p-4">
+                                   
+                                    <a class="h5 m-0 text-decoration-none" href="#"> <i class="fas fa-map-marker-alt"></i>       
+                                   <br> <a class="h5 m-0 text-decoration-none" href="#"> <i class="fas fa-coins"></i>                  
+ <a class="h5 m-0 text-decoration-none" href="#"> <i class="fas fa-clock"></i>       
+ {{ terrain.getDuree() }}</a> <br></br>
+                                </div>
+                            </div>
+                        </div>
+                       {% endif %}
+
+                            {% endfor %}
+                               {% endblock %}

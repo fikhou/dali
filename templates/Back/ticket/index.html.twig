@@ -1,0 +1,65 @@
+{% extends 'Base.html.twig' %}
+
+{% block title %}Ticket Index{% endblock %}
+
+{% block body %}
+
+<div class="">
+    <div class="d-flex justify-content-center">
+        <ul class="nav">
+            <li class="nav-item me-3">
+                <a class="nav-link btn btn-custom-primary" href="{{ path('app_ticket_index') }}">
+                    <span>Ticket</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-custom-primary" href="{{ path('app_reeser_index') }}">
+                    <span>Reservation</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<main id="main" class="main">
+    <!-- Sort by Date Button -->
+    <a href="{{ path('app_ticket_index', {'sort': 'date_desc'}) }}">Sort by Date (Newest First)</a>
+    <a href="{{ path('app_ticket_index', {'sort': 'date_asc'}) }}">Sort by Date (Oldest First)</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.id }}</td>
+                    <td>{{ ticket.nombre }}</td>
+                    <td>{{ ticket.totale }}</td>
+                    <td>{{ ticket.date ? ticket.date|date('Y-m-d') : '' }}</td>
+                    <td>
+                        <a href="{{ path('app_ticket_show', {'id': ticket.id}) }}">Show</a>
+                        <a href="{{ path('app_ticket_edit', {'id': ticket.id}) }}">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ticket_new') }}">Create New</a>
+
+    <!-- Button to trigger PDF download -->
+    <a href="{{ path('generate_pdf') }}" class="btn btn-primary">Download PDF</a>
+</main>
+
+{% endblock %}

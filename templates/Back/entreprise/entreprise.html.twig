@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Entreprises
+{% endblock %}
+
+{% block body %}
+<div class="position-relative w-75 mx-auto animated slideInDown">
+    <input id="searchInput" class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Search by Entreprise Name">
+    <button id="searchButton" class="btn btn-primary rounded-pill py-2 px-4 position-absolute top-0 end-0 me-2" style="margin-top: 7px;">Search</button>
+</div>
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title bg-white text-center text-primary px-3">Entreprise Guide</h6>
+            <h1 class="mb-5">Meet Our Entreprises</h1>
+        </div>
+        <div class="row g-4" id="entrepriseList">
+            {% for entreprise in entreprises %}
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.{{ loop.index }}s">
+                    <div class="team-item">
+                        <div class="overflow-hidden">
+                            {% if entreprise.image %}
+                                <img class="img-fluid" src="{{ asset('uploads/images/' ~ entreprise.image) }}" alt="">
+                            {% endif %}
+                        </div>
+                        <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
+                            <!-- Add your social media links here -->
+                            <!-- Example: Facebook, Twitter, Instagram -->
+                            <!-- Replace "#" with actual URLs -->
+                            <a class="btn btn-square mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square mx-1" href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                        <div class="text-center p-4">
+                            <h5 class="mb-0">{{ entreprise.getNomEntreprise() }}</h5>
+                            <small>{{ entreprise.getDescription() }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const entrepriseList = document.getElementById('entrepriseList').querySelectorAll('.team-item');
+
+        function performSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            entrepriseList.forEach(item => {
+                const entrepriseName = item.querySelector('h5').textContent.trim().toLowerCase();
+
+                if (entrepriseName.includes(searchTerm)) {
+                    item.style.display = 'block'; // Show the item if it matches the search
+                } else {
+                    item.style.display = 'none'; // Hide the item if it doesn't match the search
+                }
+            });
+        }
+
+        document.getElementById('searchButton').addEventListener('click', performSearch);
+
+        // Reset the display of all items when the search input is empty
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.trim().toLowerCase();
+
+            entrepriseList.forEach(item => {
+                const entrepriseName = item.querySelector('h5').textContent.trim().toLowerCase();
+
+                if (searchTerm === '' || entrepriseName.includes(searchTerm)) {
+                    item.style.display = 'block'; // Show all items if search input is empty or matches the name
+                } else {
+                    item.style.display = 'none'; // Hide non-matching items
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

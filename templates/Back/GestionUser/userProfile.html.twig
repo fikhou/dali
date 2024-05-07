@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+  <link href="{{ asset('assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Jan 29 2024 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+
+</head>
+    <body>
+
+ <header id="header" class="header fixed-top d-flex align-items-center">
+
+   
+                        {% if app.user %} 
+                        {% set user = app.user %}
+                        {% endif %}
+                        
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="{{ path('app_Home') }}" class="logo d-flex align-items-center"> <!-- home -->
+        <span class="d-none d-lg-block"><span style="color:black">R</span>vent</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+            
+              {% if user.image == null %}
+              {% set imagePath = 'uploads/images/default.jpg' %}
+              {% else %}
+              {% set imagePath = 'uploads/images/' ~ user.image %}
+              {% endif %}
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{{ asset(imagePath) }}" alt="Profile" class="rounded-circle" >
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{user.Name}}</span>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{user.name}}</h6>
+              <span>
+              {{user.Role}}
+              </span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+          <a class="dropdown-item d-flex align-items-center" href="{{ path('app_user_profile') }}">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+          
+
+          
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{{ path('app_login') }}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul>
+        </li>
+
+      </ul>
+    </nav>
+
+  </header>
+ <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+
+  
+      <li class="nav-heading" style="color:#033E6A">Pages</li>
+  
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('app_user_profile') }}"> <!-- user pROFILE PAGE -->
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+        {% if user.Role == 'Proprietaire de Terrain' %}
+      
+        <li class="nav-item">
+      <a class="nav-link collapsed" href="{{ path('app_terrain_index') }}"> 
+        <i class="bi bi-grid"></i>
+        <span>Terrain</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{{ path('app_avis_index') }}"> 
+        <i class="bi bi-grid"></i>
+        <span>Avis</span>
+      </a>
+    </li>
+    {% endif %}
+    {% if user.Role == 'Organisateur' %}
+        <li class="nav-item">
+      <a class="nav-link collapsed" href="{{ path('app_user_tournoi') }}"> 
+        <i class="bi bi-grid"></i>
+        <span>Tournoi</span>
+      </a>
+    </li>
+    {% endif %}
+      </li>
+  
+      
+    </ul>
+  
+  </aside>
+
+  <main id="main" class="main">
+
+       {% for type, messages in app.session.flashbag.all() %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+    <div class="pagetitle">
+      <h1 style="color:#033E6A">Profile Page</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Pages</li> <!-- user pROFILE PAGE -->
+          <li class="breadcrumb-item active">Profile</li>
+          
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+              <img src="{{  asset(imagePath) }}" alt="Profile" class="rounded-circle">
+              <h2>{{ user.Name }}</h2>
+              <h3>{{ user.Role }}</h3>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                  <h5 class="card-title">Profile Details</h5>
+
+           
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Name</div>
+                  <div class="col-lg-9 col-md-8">{{ user.Name }}</div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Email</div>
+                  <div class="col-lg-9 col-md-8">{{ user.Email }}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Age</div>
+                  <div class="col-lg-9 col-md-8">{{ user.Age }}</div>
+                </div>
+                 <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Phone</div>
+                  <div class="col-lg-9 col-md-8">{{ user.Phone }}</div>
+                </div>
+                 <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Address</div>
+                  <div class="col-lg-9 col-md-8">{{ user.Address }}</div>
+                </div>
+                  <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Membre since</div>
+                  <div class="col-lg-9 col-md-8">{{ user.datedecreation }}</div>
+                </div>
+                 <div class="row">
+                    <div class="col-lg-9 col-md-8"><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#desactivateAccountModal">Desactivate Account</button> </div> 
+                   </div>
+  
+<!-- Modal -->
+<div class="modal fade" id="desactivateAccountModal" tabindex="-1" aria-labelledby="desactivateAccountModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="desactivateAccountModalLabel">Deactivate Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to deactivate your account?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="confirmDeactivationBtn" 
+        onclick="ivertStatus('{{ user.Email }}')"
+        >Deactivate</button>
+      </div>
+      {#  <a href="{{ path('app_logout') }}"></a> #}
+    </div>
+  </div>
+</div>
+
+
+
+             
+
+
+
+
+
+
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-1" id="profile-edit">
+
+                                  <h5 class="card-title">Update Profile</h5>
+
+                      {{ include('Back/GestionUser/FormTemplates/_formedit.html.twig' , {'button_label': 'Update'} )  }}
+
+                </div>
+
+
+                <div class="tab-pane fade pt-1" id="profile-change-password">
+
+                                  <h5 class="card-title">Update Password</h5>
+
+                  <!-- Change Password Form -->
+                   {{ include('Back/GestionUser/FormTemplates/_formpassword.html.twig' , {'button_label': 'Update'} ) }}
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+<script>
+
+function ivertStatus(userEmail) {
+  const confirmDeactivationBtn = document.getElementById('confirmDeactivationBtn');
+ 
+  $.post("/user/inverStatus/" + userEmail , function(data) {
+        if (data === 'success') {
+        
+            window.location.href = '/logout';
+        } else {
+            console.log('error');
+         }
+        
+       
+
+
+        
+    });
+}
+         
+    
+</script>
+
+
+ <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    
+      <!-- Vendor JS Files -->
+      <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+      <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+      <script src="{{ asset('assets/vendor/chart.js/chart.umd.js') }}"></script>
+      <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
+      <script src="{{ asset('assets/vendor/quill/quill.min.js') }}"></script>
+      <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+      <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
+      <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+    
+      <!-- Template Main JS File -->
+      <script src="assets/js/main.js"></script>
+    
+
+</body>
+
+</html>
+
+
