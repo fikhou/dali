@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Event;
-
+use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Reeser;
 use App\Form\ReeserType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,16 +15,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReeserController extends AbstractController
 {
     #[Route('/', name: 'app_reeser_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
     {
-        $reesers = $entityManager
-            ->getRepository(Reeser::class)
-            ->findAll();
+        // Retrieve all Reeser entities from the repository
+        $query = $entityManager->getRepository(Reeser::class)->createQueryBuilder('r')
+            ->getQuery();
 
+        // Paginate the results using PaginatorInterface
+        $reesers = $paginator->paginate(
+            $query, // Query to paginate
+            $request->query->getInt('page', 1), // Current page number, defaulting to 1
+            1 // Number of items per page
+        );
+
+        // Render the index template with paginated results
         return $this->render('Back/reeser/index.html.twig', [
             'reesers' => $reesers,
         ]);
     }
+    
 
     #[Route('/new', name: 'app_reeser_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

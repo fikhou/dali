@@ -88,6 +88,7 @@
                 <span>My Profile</span>
               </a>
             </li>
+            
           
 
           
@@ -122,6 +123,18 @@
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
+         <li class="nav-item">
+       <a class="nav-link" href="{{ path('app_ticket_indexx') }}">
+        <i class="bi bi-grid"></i>
+        <span>mes ticekts</span>
+    </a>
+     <li class="nav-item">
+    <a class="nav-link" href="{{ path('app_reesers_index') }}">
+        <i class="bi bi-grid"></i>
+        <span>mes event</span>
+    </a>
+    </li>   
+
         {% if user.Role == 'Proprietaire de Terrain' %}
       
         <li class="nav-item">

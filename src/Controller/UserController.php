@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Ticket;
+use App\Entity\Reeser;
+use Knp\Component\Pager\PaginatorInterface;
 
 use App\Entity\User;
 use App\Form\UserType;
@@ -232,6 +235,46 @@ public function invertstatus(Request $request , EntityManagerInterface $entityMa
 
   }
 
+  #[Route('/Tickets', name: 'app_Tickets', methods: ['GET', 'POST'])]
+  public function Ticket( EntityManagerInterface $em): Response
+  {
+   
+
+      return $this->render('Back/ticket/indexx.html.twig', [
+        
+         
+          
+     
+      ]);
+
 
 }
+#[Route('/tickets', name: 'app_ticket_indexx', methods: ['GET'])]
+public function indexx(EntityManagerInterface $entityManager): Response
+{
+    $tickets = $entityManager->getRepository(Ticket::class)->findAll();
 
+    return $this->render('Back/ticket/indexx.html.twig', [
+        'tickets' => $tickets,
+    ]);
+}
+#[Route('/reservation', name: 'app_reesers_index', methods: ['GET'])]
+public function indexe(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
+{
+    // Retrieve all Reeser entities from the repository
+    $query = $entityManager->getRepository(Reeser::class)->createQueryBuilder('r')
+        ->getQuery();
+
+    // Paginate the results using PaginatorInterface
+    $reesers = $paginator->paginate(
+        $query, // Query to paginate
+        $request->query->getInt('page', 1), // Current page number, defaulting to 1
+        1 // Number of items per page
+    );
+
+    // Render the index template with paginated results
+    return $this->render('Back/ticket/reser.html.twig', [
+        'reesers' => $reesers,
+    ]);
+}
+}

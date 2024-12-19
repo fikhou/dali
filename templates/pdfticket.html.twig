@@ -1,27 +1,90 @@
 <!-- pdf/ticket_table.html.twig -->
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Total</th>
-            <th>Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for ticket in tickets %}
-            <tr>
-                <td>{{ ticket.id }}</td>
-                <td>{{ ticket.nombre }}</td>
-                <td>{{ ticket.totale }}</td>
-                <td>{{ ticket.date ? ticket.date|date('Y-m-d') : '' }}</td>
-                
-            </tr>
+<style>
+    /* Custom styles for the table card */
+    .card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 300px;
+        background-color: #E8F5E9;
+        border: 1px solid #4CAF50;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(76, 175, 80, 0.1);
+        position: relative;
+    }
+
+    .rvent-text {
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 24px;
+        font-weight: bold;
+        color: #4CAF50;
+    }
+
+    .card-content {
+        width: 100%;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        /* Center the card content */
+        margin: 0 auto; /* Set left and right margins to 'auto' */
+    }
+
+    /* Additional table styles */
+    table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: #ffffff;
+    }
+
+    td {
+        background-color: #ffffff;
+    }
+</style>
+
+<div class="card-container">
+    <div class="rvent-text">Rvent</div>
+    <div class="card-content">
+        {% if tickets is not empty %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in tickets %}
+                        <tr>
+                            <td>{{ ticket.id }}</td>
+                            <td>{{ ticket.nombre }}</td>
+                            <td>{{ ticket.totale }}</td>
+                            <td>{{ ticket.date ? ticket.date|date('Y-m-d') : '' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% else %}
-            <tr>
-                <td colspan="5">No records found</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+            <p>No records found.</p>
+        {% endif %}
+    </div>
+</div>

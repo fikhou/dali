@@ -1,6 +1,7 @@
 # config/services.yaml
 
 parameters:
+    weather_api_key: 'bf9b72083b8add6bc264e053f8bc74eb'
     image_directory: '%kernel.project_dir%/public/uploads/images'
     terrain_images_directory: '%kernel.project_dir%/public/uploads/images'
     terrain_videos_directory: '%kernel.project_dir%/public/uploads/videos'
@@ -32,3 +33,6 @@ services:
     # Explicitly define the LoginFormAuthenticator service
     App\Security\LoginFormAuthenticator:
         autowire: true
+    App\Service\WeatherService:
+        arguments:
+            $apiKey: '%weather_api_key%'

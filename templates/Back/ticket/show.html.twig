@@ -3,21 +3,16 @@
 {% block title %}Ticket index{% endblock %}
 
 {% block body %}
- 
-
-
- <div class="">
+<div>
     <div class="d-flex justify-content-center">
         <ul class="nav">
             <li class="nav-item me-3">
                 <a class="nav-link btn btn-custom-primary" href="{{ path('app_ticket_index') }}">
-                    </i>
                     <span>Ticket</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link btn btn-custom-primary" href="{{ path('app_reeser_index') }}">
-                    </i>
                     <span>Reservation</span>
                 </a>
             </li>
@@ -25,11 +20,7 @@
     </div>
 </div>
 
-     
-
-
-  
-      <main id="main" class="main">
+<main id="main" class="main">
     <h1>Ticket</h1>
 
     <table class="table">
@@ -43,7 +34,7 @@
                 <td>{{ ticket.nombre }}</td>
             </tr>
             <tr>
-                <th>Totale</th>
+                <th>Total</th>
                 <td>{{ ticket.totale }}</td>
             </tr>
             <tr>
@@ -53,9 +44,35 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_ticket_index') }}">back to list</a>
+    <a href="{{ path('app_ticket_index') }}">Back to list</a>
 
-    <a href="{{ path('app_ticket_edit', {'id': ticket.id}) }}">edit</a>
+    <a href="#" onclick="confirmEdit()">Edit</a>
 
     {{ include('Back/ticket/_delete_form.html.twig') }}
+</main>
+
+<script>
+    function confirmEdit() {
+        // Generate a random 4-digit verification code
+        const verificationCode = Math.floor(1000 + Math.random() * 9000);
+
+        const confirmed = confirm(`To proceed to edit, please enter the verification code: ${verificationCode}`);
+        if (confirmed) {
+            const enteredCode = prompt("Enter the verification code:");
+            if (enteredCode !== null && enteredCode.trim() !== '') {
+                // Check if the entered code matches the generated verification code
+                if (parseInt(enteredCode) === verificationCode) {
+                    // Redirect to the edit page if the code is correct
+                    window.location.href = `{{ path('app_ticket_edit', {'id': ticket.id}) }}`;
+                } else {
+                    alert("Incorrect verification code. Edit cancelled.");
+                }
+            } else {
+                alert("Invalid verification code. Edit cancelled.");
+            }
+        } else {
+            alert("Edit cancelled.");
+        }
+    }
+</script>
 {% endblock %}

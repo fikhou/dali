@@ -9,16 +9,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Joli\JoliNotif\Notification;
+use Joli\JoliNotif\NotifierFactory;
 #[Route('/ticket')]
 class TicketController extends AbstractController
 {
     #[Route('/new', name: 'app_ticket_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        
         $ticket = new Ticket();
-
+    
         // Get the currently authenticated user
         $user = $this->getUser();
     
@@ -46,6 +46,15 @@ class TicketController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($ticket);
             $entityManager->flush();
+            $notifier = NotifierFactory::create(); 
+    
+            // Create your notification
+            $notification = (new Notification())
+                ->setTitle('Notification title')
+                ->setBody('This is the body of your notification'); 
+    
+            // Send it
+            $notifier->send($notification);
     
             $this->addFlash('success', 'Ticket created successfully!');
     

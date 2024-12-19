@@ -107,25 +107,40 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                
+                <th>nom</th>
+                
+                <th>Email utilisateur</th>
                 <th>Demande</th>
                 <th>Produit</th>
                 <th>Monatant</th>
                 <th>Numtel</th>
+                <th>NomEtab</th>
+                <th>Domaine</th>
+                <th>Tetab</th>
+                <th>Description</th>
+                <th>Etat</th>
+                
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for forumsponsor in forumsponsors %}
             <tr>
-                <td>{{ forumsponsor.id }}</td>
+                <td>{{ forumsponsor.user.name }}</td>
+                <td>{{ forumsponsor.user.email }}</td>
                 <td>{{ forumsponsor.demande }}</td>
                 <td>{{ forumsponsor.produit }}</td>
                 <td>{{ forumsponsor.monatant }}</td>
                 <td>{{ forumsponsor.numtel }}</td>
+                <td>{{ forumsponsor.nomEtab }}</td>
+                <td>{{ forumsponsor.domaine }}</td>
+                <td>{{ forumsponsor.tetab }}</td>
+                <td>{{ forumsponsor.description }}</td>
+                <td>{{ forumsponsor.etat }}</td>
                 <td>
-                    <a href="{{ path('app_forumsponsor_show', {'id': forumsponsor.id}) }}">show</a>
-                    <a href="{{ path('app_forumsponsor_edit', {'id': forumsponsor.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_forumsponsor_show', {'id': forumsponsor.id}) }}">show</a>
+                    <a class="btn btn-primary" href="{{ path('app_forumsponsor_edit', {'id': forumsponsor.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -136,5 +151,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_forumsponsor_new') }}">Create new</a>
+    <a class="btn btn-primary" href="{{ path('app_forumsponsor_new') }}">Create new</a>
+    <a href="{{ path('app_sponsoring_export_pdf') }}" class="btn btn-primary">Export PDF</a>
 {% endblock %}

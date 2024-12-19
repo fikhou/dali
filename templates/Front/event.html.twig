@@ -3,6 +3,41 @@
 {% block title %}Search Events{% endblock %}
 
 {% block body %}
+<style>
+    .forecast-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: stretch;
+    }
+    .forecast-item {
+        flex: 1;
+        min-width: 220px;
+        border: 1px solid #ddd;
+        margin: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        background: #f9f9f9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .forecast-item p {
+        margin: 5px 0;
+    }
+    .temp {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    .icon {
+        width: 50px;
+        height: 50px;
+    }
+     .weather-icon {
+        width: 50px;
+        height: 50px;
+        filter: invert(59%) sepia(89%) saturate(638%) hue-rotate(198deg) brightness(96%) contrast(89%); /* Example blue color tint */
+    }
+</style>
+
 <div class="position-relative w-75 mx-auto animated slideInDown">
     <form action="{{ path('event_search') }}" method="GET">
         <input id="searchInput" class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" name="search" placeholder="Search by Event Name">
@@ -45,4 +80,38 @@
         </div>
     </div>
 </div>
+
+<form method="get" action="{{ path('app_Event') }}">
+    <input type="text" name="city" placeholder="Entrez le nom d'une ville" required>
+    <button type="submit">Rechercher</button>
+</form>
+
+{# Affichage de la météo #}
+{% if errorMsg %}
+    <p class="error">{{ errorMsg }}</p>
+{% endif %}
+
+{% if forecast %}
+    <div class="forecast-container">
+        {% set lastDate = null %}
+        {% for day in forecast.list %}
+            {% set currentDate = day.dt_txt|date('Y-m-d') %}
+            {% if currentDate != lastDate %}
+                <div class="forecast-item">
+                    <p>Date : <strong>{{ day.dt_txt|date('Y-m-d') }}</strong></p>
+                    <p class="temp">{{ day.main.temp_max }} °C / {{ day.main.temp_min }} °C</p>
+                    <!-- Ajout de l'icône météo -->
+                    <img src="http://openweathermap.org/img/wn/{{ day.weather[0].icon }}.png" alt="Weather icon" class="weather-icon">
+                    
+                    <p><i class="fas fa-wind"></i> Vitesse du vent : {{ day.wind.speed }} m/s</p>
+                    <p><i class="fas fa-tint"></i> Humidité : {{ day.main.humidity }}%</p>
+                    <p><i class="fas fa-cloud"></i> Nuages : {{ day.clouds.all }}%</p>
+                    <p><i class="fas fa-umbrella"></i> Précipitations : {{ day.rain['3h']|default('0') }} mm</p>
+                </div>
+                {% set lastDate = currentDate %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
 {% endblock %}

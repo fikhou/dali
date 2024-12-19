@@ -1,9 +1,11 @@
 {% extends 'BaseBack.html.twig' %}
 
-{% block title %}Sponsor index{% endblock %}
+{% block title %}Ticket Index{% endblock %}
 
 {% block body %}
-  <h1>Create new Ticket</h1>
+
+<h1>Create new Ticket</h1>
+
 <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -79,87 +81,68 @@
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
+ <li>
+          <a class="dropdown-item d-flex align-items-center" href="{{ path('app_user_profile') }}">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+     <li class="nav-item">
+    <a class="nav-link" href="{{ path('app_ticket_indexx') }}">
+        <i class="bi bi-grid"></i>
+        <span>mes ticekts</span>
+    </a>
+     <li class="nav-item">
+    <a class="nav-link" href="{{ path('app_reesers_index') }}">
+        <i class="bi bi-grid"></i>
+        <span>mes event</span>
+    </a>
+</li>   
 
-      <li class="nav-item">
-    <a class="nav-link" href="{{ path('app_ticket_index') }}">
-        <i class="bi bi-grid"></i>
-        <span>Ticket</span>
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="{{ path('app_reeser_index') }}">
-        <i class="bi bi-grid"></i>
-        <span>Reservation</span>
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="{{ path('app_forumsponsor_index') }}">
-        <i class="bi bi-grid"></i>
-        <span>Sposonsor</span>
-    </a>
-</li>>
+
+
+
+ 
+
+    </ul>
 
   </aside><!-- End Sidebar-->
 
   
-      <main id="main" class="main">
-    <h1>Forumsponsor</h1>
+
+
+<main id="main" class="main">
+    <!-- Sort by Date Button -->
+    <a href="{{ path('app_ticket_index', {'sort': 'date_desc'}) }}">Sort by Date (Newest First)</a>
+    <a href="{{ path('app_ticket_index', {'sort': 'date_asc'}) }}">Sort by Date (Oldest First)</a>
 
     <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
         <tbody>
-            <tr>
-                <th>nom</th>
-                <td>{{ forumsponsor.user.name }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ forumsponsor.user.email }}</td>
-            </tr>
-            <tr>
-                <th>demande</th>
-                <td>{{ forumsponsor.demande }}</td>
-            </tr>
-            <tr>
-                <th>produit</th>
-                <td>{{ forumsponsor.produit }}</td>
-            </tr>
-            <tr>
-                <th>monatant</th>
-                <td>{{ forumsponsor.monatant }}</td>
-            </tr>
-            <tr>
-                <th>Numero</th>
-                <td>{{ forumsponsor.numtel }}</td>
-            </tr>
-            <tr>
-                <th>Nom Etablissement</th>
-                <td>{{ forumsponsor.nomEtab }}</td>
-            </tr>
-            <tr>
-                <th>domaine</th>
-                <td>{{ forumsponsor.domaine }}</td>
-            </tr>
-            <tr>
-                <th>Type d'Etablissement</th>
-                <td>{{ forumsponsor.tetab }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ forumsponsor.description }}</td>
-            </tr>
-            <tr>
-                <th>Etat</th>
-                <td>{{ forumsponsor.etat }}</td>
-            </tr>
-            <!-- Add other properties as needed -->
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.id }}</td>
+                    <td>{{ ticket.nombre }}</td>
+                    <td>{{ ticket.totale }}</td>
+                    <td>{{ ticket.date ? ticket.date|date('Y-m-d') : '' }}</td>
+                    <td>
+                    
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No records found</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
-
-    <a class="btn btn-primary" href="{{ path('app_forumsponsor_index') }}">Back to list</a>
-
-    <a class="btn btn-primary" href="{{ path('app_forumsponsor_edit', {'id': forumsponsor.id}) }}">Edit</a>
-
-    {{ include('Back/forumsponsor/_delete_form.html.twig') }}
-</main>
-
+    
 {% endblock %}
